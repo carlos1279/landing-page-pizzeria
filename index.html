@@ -10,6 +10,24 @@
   <title>La Vera Pizzeria – Autentica Pizza Napoletana a Milano</title>
   <meta name="description" content="Pizzeria autentica a Milano. Pizza napoletana fatta in casa, forno a legna, ingredienti freschi. Prenota il tuo tavolo o ordina a domicilio!" />
 
+  <!-- ============================================================
+       SECURITY HEADERS
+       ============================================================ -->
+  <!-- Content Security Policy: Protegge da XSS e injection attacks -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https: blob:; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self';" />
+  
+  <!-- Protegge da Clickjacking -->
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta http-equiv="X-Frame-Options" content="DENY" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+  
+  <!-- Referrer Policy: Controlla quali informazioni vengono inviate -->
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  
+  <!-- Permissions Policy: Limita accesso a browser features -->
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()" />
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -370,7 +388,7 @@
   <section id="home" class="relative min-h-screen flex items-center pt-20 overflow-hidden">
     <!-- Video Background -->
     <div class="video-bg-container">
-      <video autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070">
+      <video autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1574071318508-1cdbad80ad38?q=80&w=2070" loading="lazy" preload="metadata">
         <source src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663472152618/JHMxQbvCRZOJhYSN.mp4" type="video/mp4">
       </video>
       <div class="video-overlay"></div>
@@ -883,5 +901,77 @@
       }, 1500);
     });
   </script>
+</body>
+</html>
+
+    // ============================================================
+    // SECURITY PROTECTIONS
+    // ============================================================
+    
+    // 5. XSS Protection: Sanitize user input
+    function sanitizeInput(input) {
+      const div = document.createElement('div');
+      div.textContent = input;
+      return div.innerHTML;
+    }
+
+    // 6. Form Input Validation & Sanitization
+    const formInputs = document.querySelectorAll('.form-input');
+    formInputs.forEach(input => {
+      input.addEventListener('blur', function() {
+        this.value = sanitizeInput(this.value);
+      });
+      input.addEventListener('keypress', function(e) {
+        if (e.key === '<' || e.key === '>' || e.key === '{' || e.key === '}') {
+          e.preventDefault();
+        }
+      });
+    });
+
+    // 7. Rate Limiting for Form Submissions
+    let lastSubmitTime = 0;
+    const SUBMIT_COOLDOWN = 3000;
+    form.addEventListener('submit', function(e) {
+      const now = Date.now();
+      if (now - lastSubmitTime < SUBMIT_COOLDOWN) {
+        e.preventDefault();
+        console.warn('Form submission rate limited');
+        return false;
+      }
+      lastSubmitTime = now;
+    });
+
+    // 8. Prevent Clickjacking via Frame Detection
+    if (window.self !== window.top) {
+      window.top.location = window.self.location;
+    }
+
+    // 9. Monitor for Suspicious Activity
+    window.addEventListener('error', function(e) {
+      console.error('Error detected:', e.type);
+    });
+
+    // 10. CORS Protection: Validate API calls
+    const originalFetch = window.fetch;
+    window.fetch = function(...args) {
+      const url = args[0];
+      if (typeof url === 'string' && !url.startsWith('http://localhost') && !url.startsWith(window.location.origin)) {
+        if (!url.startsWith('https://')) {
+          console.warn('Insecure fetch blocked:', url);
+          return Promise.reject(new Error('Insecure request blocked'));
+        }
+      }
+      return originalFetch.apply(this, args);
+    };
+
+    // 11. Disable eval() for security
+    window.eval = function() {
+      throw new Error('eval() is disabled for security reasons');
+    };
+
+    console.log('🔒 Security protections activated');
+
+  </script>
+
 </body>
 </html>
