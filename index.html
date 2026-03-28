@@ -259,6 +259,43 @@
       transform: scale(1.02);
       box-shadow: 0 8px 24px rgba(211,47,47,0.15);
     }
+
+    /* 3D Chart Styles */
+    #chart-container {
+      width: 100%;
+      height: 400px;
+      position: relative;
+      cursor: grab;
+      background: radial-gradient(circle at center, rgba(211,47,47,0.05) 0%, transparent 70%);
+      border-radius: 24px;
+      margin: 20px 0;
+    }
+    #chart-container:active { cursor: grabbing; }
+    .legend {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      background: white;
+      border: 1px solid #eee;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
   </style>
 </head>
 
@@ -295,989 +332,743 @@
             <i class="fas fa-pizza-slice text-white text-lg"></i>
           </div>
           <div class="flex flex-col leading-tight">
-            <span class="text-white font-black text-xl tracking-tight">La Vera<span class="text-gradient">Pizza</span></span>
-            <span class="text-red-200 text-xs font-medium tracking-widest uppercase">Forno a Legna</span>
+            <span class="text-white font-black text-xl tracking-tight">La Vera<span class="text-brand-red">Pizza</span></span>
+            <span class="text-brand-gold text-[10px] font-bold uppercase tracking-[0.2em]">Artigianale</span>
           </div>
         </a>
 
-        <!-- NAVIGAZIONE DESKTOP -->
-        <nav class="hidden lg:flex items-center gap-8">
-          <a href="#menu"      class="text-slate-300 hover:text-red-400 text-sm font-medium transition-colors duration-200">Menu</a>
-          <a href="#perche-noi" class="text-slate-300 hover:text-red-400 text-sm font-medium transition-colors duration-200">Chi Siamo</a>
-          <a href="#recensioni" class="text-slate-300 hover:text-red-400 text-sm font-medium transition-colors duration-200">Recensioni</a>
-          <a href="#contatti"   class="text-slate-300 hover:text-red-400 text-sm font-medium transition-colors duration-200">Contatti</a>
+        <!-- DESKTOP MENU -->
+        <nav class="hidden md:flex items-center space-x-8">
+          <a href="#home" class="text-white/80 hover:text-brand-red font-medium text-sm transition-colors">Home</a>
+          <a href="#perche-noi" class="text-white/80 hover:text-brand-red font-medium text-sm transition-colors">Qualità</a>
+          <a href="#menu" class="text-white/80 hover:text-brand-red font-medium text-sm transition-colors">Menu</a>
+          <a href="#recensioni" class="text-white/80 hover:text-brand-red font-medium text-sm transition-colors">Dicono di noi</a>
+          <a href="#contatti" class="text-white/80 hover:text-brand-red font-medium text-sm transition-colors">Contatti</a>
         </nav>
 
-        <!-- BOTTONE PRENOTA -->
-        <div class="flex items-center gap-3">
-          <!-- MODIFICA: Sostituisci +39XXXXXXXXXX con il tuo numero di telefono -->
+        <!-- CTA BUTTON -->
+        <!-- MODIFICA: Sostituisci +39XXXXXXXXXX con il tuo numero di telefono -->
+        <div class="hidden md:block">
           <a href="tel:+39XXXXXXXXXX"
-             class="flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm text-white transition-all duration-200 hover:scale-105 active:scale-95"
-             style="background: linear-gradient(135deg, #D32F2F, #B71C1C); box-shadow: 0 4px 20px rgba(211,47,47,0.4);">
-            <i class="fas fa-phone-alt text-xs animate-bounce-slow"></i>
-            <span class="hidden sm:inline">Prenota</span>
-            <span class="sm:hidden">Tel</span>
+             class="inline-flex items-center gap-2 bg-brand-red hover:bg-brand-darkred text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-cta hover:shadow-cta-lg">
+            <i class="fas fa-phone-alt"></i>
+            Chiama Ora
           </a>
+        </div>
 
-          <!-- HAMBURGER MOBILE -->
-          <button id="menu-btn"
-                  class="lg:hidden flex flex-col justify-center items-center w-9 h-9 gap-1.5 rounded-lg hover:bg-white/10 transition-colors"
-                  aria-label="Apri menu">
-            <span class="menu-bar block w-5 h-0.5 bg-white transition-all duration-300"></span>
-            <span class="menu-bar block w-5 h-0.5 bg-white transition-all duration-300"></span>
-            <span class="menu-bar block w-5 h-0.5 bg-white transition-all duration-300"></span>
+        <!-- MOBILE MENU BUTTON -->
+        <div class="md:hidden flex items-center">
+          <button id="mobile-menu-button" class="text-white focus:outline-none p-2">
+            <i class="fas fa-bars text-2xl"></i>
           </button>
         </div>
       </div>
     </div>
 
-    <!-- MENU MOBILE -->
-    <div id="mobile-menu"
-         class="lg:hidden hidden border-t border-white/10"
-         style="background: rgba(26,20,16,0.98);">
-      <nav class="flex flex-col px-4 py-4 gap-1">
-        <a href="#menu"       class="text-slate-300 hover:text-red-400 hover:bg-white/5 px-4 py-3 rounded-lg text-sm font-medium transition-all" onclick="closeMobileMenu()">Menu</a>
-        <a href="#perche-noi" class="text-slate-300 hover:text-red-400 hover:bg-white/5 px-4 py-3 rounded-lg text-sm font-medium transition-all" onclick="closeMobileMenu()">Chi Siamo</a>
-        <a href="#recensioni" class="text-slate-300 hover:text-red-400 hover:bg-white/5 px-4 py-3 rounded-lg text-sm font-medium transition-all" onclick="closeMobileMenu()">Recensioni</a>
-        <a href="#contatti"   class="text-slate-300 hover:text-red-400 hover:bg-white/5 px-4 py-3 rounded-lg text-sm font-medium transition-all" onclick="closeMobileMenu()">Contatti</a>
-        <!-- MODIFICA: Sostituisci +39XXXXXXXXXX con il tuo numero -->
-        <a href="tel:+39XXXXXXXXXX"
-           class="flex items-center justify-center gap-2 mt-2 py-3 rounded-xl font-bold text-sm text-white"
-           style="background: linear-gradient(135deg, #D32F2F, #B71C1C);">
-          <i class="fas fa-phone-alt"></i> Prenota Tavolo
-        </a>
-      </nav>
+    <!-- MOBILE MENU (Hidden by default) -->
+    <div id="mobile-menu" class="hidden md:hidden bg-brand-dark border-t border-white/10">
+      <div class="px-4 pt-2 pb-6 space-y-1">
+        <a href="#home" class="block px-3 py-4 text-white font-medium border-b border-white/5">Home</a>
+        <a href="#perche-noi" class="block px-3 py-4 text-white font-medium border-b border-white/5">Qualità</a>
+        <a href="#menu" class="block px-3 py-4 text-white font-medium border-b border-white/5">Menu</a>
+        <a href="#recensioni" class="block px-3 py-4 text-white font-medium border-b border-white/5">Dicono di noi</a>
+        <a href="#contatti" class="block px-3 py-4 text-white font-medium">Contatti</a>
+        <div class="mt-4 px-3">
+          <a href="tel:+39XXXXXXXXXX" class="flex items-center justify-center gap-2 bg-brand-red text-white w-full py-4 rounded-xl font-bold">
+            <i class="fas fa-phone-alt"></i>
+            Chiama Ora
+          </a>
+        </div>
+      </div>
     </div>
   </header>
-
 
   <!-- ============================================================
        HERO SECTION
        ============================================================ -->
-  <section id="home"
-           class="relative min-h-screen flex items-center justify-center overflow-hidden hero-pattern"
-           style="background-color: #1A1410;">
-
-    <!-- Immagine di sfondo -->
-    <!-- MODIFICA: Sostituisci l'URL con una tua immagine se necessario -->
+  <section id="home" class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+    <!-- Background Image with Overlay -->
     <div class="absolute inset-0 z-0">
-      <img src="https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?q=80&w=2070"
-           alt="Pizza appena sfornata"
-           class="w-full h-full object-cover object-center"
-           loading="eager" />
-      <!-- Overlay gradiente -->
-      <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(26,20,16,0.92) 0%, rgba(211,47,47,0.75) 50%, rgba(46,125,50,0.60) 100%);"></div>
-      <!-- Overlay pattern -->
-      <div class="absolute inset-0 hero-pattern opacity-30"></div>
+      <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070"
+           alt="Pizza artigianale"
+           class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-hero-gradient"></div>
+      <div class="absolute inset-0 hero-pattern"></div>
     </div>
 
-    <!-- Contenuto Hero -->
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 text-center lg:text-left">
-      <div class="max-w-3xl">
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="text-center lg:text-left animate-fade-in-up">
+          <div class="badge mb-6 bg-white/10 border-white/20 text-white">
+            <i class="fas fa-fire text-brand-red"></i>
+            Forno a legna tradizionale
+          </div>
+          <!-- MODIFICA: Cambia "[TUA CITTÀ]" con la tua città -->
+          <h1 class="text-5xl md:text-7xl font-black text-white leading-[1.1] mb-6">
+            L'Autentica <br/>
+            <span class="text-brand-red">Pizza Napoletana</span> <br/>
+            a <span class="text-brand-gold">Milano</span>
+          </h1>
+          <p class="text-lg md:text-xl text-white/80 mb-10 max-w-xl mx-auto lg:mx-0 font-light leading-relaxed">
+            Ingredienti freschi, impasto a lunga lievitazione e la passione di chi ama la tradizione. Scopri il vero gusto di Napoli.
+          </p>
 
-        <!-- Badge superiore -->
-        <div class="animate-fade-in-up delay-100 inline-flex items-center gap-2 mb-6">
-          <span class="badge">
-            <i class="fas fa-fire text-sm"></i>
-            Forno a Legna Tradizionale
-          </span>
-          <span class="badge">
-            <i class="fas fa-star text-sm"></i>
-            4.8/5 su Google
-          </span>
-        </div>
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+            <a href="#menu" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-10 py-4 rounded-full font-bold text-lg transition-all shadow-cta hover:shadow-cta-lg flex items-center justify-center gap-2">
+              <i class="fas fa-utensils"></i>
+              Scopri il Menu
+            </a>
+            <a href="#contatti" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white border border-white/30 px-10 py-4 rounded-full font-bold text-lg transition-all backdrop-blur-sm flex items-center justify-center gap-2">
+              <i class="fas fa-calendar-check"></i>
+              Prenota Tavolo
+            </a>
+          </div>
 
-        <!-- Titolo principale -->
-        <!-- MODIFICA: Cambia "[TUA CITTÀ]" con la città in cui operi -->
-        <h1 class="animate-fade-in-up delay-200 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-tight tracking-tight mb-6">
-          La Vera<br />
-          <span class="text-gradient">Pizza Napoletana</span><br />
-          a <span class="text-white">Milano</span>
-        </h1>
-
-        <!-- Sottotitolo -->
-        <p class="animate-fade-in-up delay-300 text-lg sm:text-xl text-slate-200 leading-relaxed mb-10 max-w-2xl">
-          Impasto lievitato 72 ore, ingredienti a km 0, forno a legna. Ogni pizza è un'opera d'arte. <strong class="text-white">Aperto 7 giorni su 7.</strong>
-        </p>
-
-        <!-- CTA Buttons -->
-        <div class="animate-fade-in-up delay-400 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12">
-          <a href="#contatti"
-             class="group flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-bold text-lg text-white transition-all duration-300 hover:scale-105 active:scale-95"
-             style="background: linear-gradient(135deg, #D32F2F, #B71C1C); box-shadow: 0 8px 32px rgba(211,47,47,0.55);">
-            <i class="fas fa-calendar-check text-base group-hover:scale-110 transition-transform"></i>
-            Prenota Tavolo
-          </a>
-          <!-- MODIFICA: Sostituisci +39XXXXXXXXXX con il tuo numero WhatsApp -->
-          <a href="https://wa.me/39XXXXXXXXXX?text=Ciao!%20Vorrei%20ordinare%20una%20pizza."
-             target="_blank"
-             rel="noopener"
-             class="group flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-bold text-lg text-white border-2 border-white/30 backdrop-blur-sm transition-all duration-300 hover:border-green-400 hover:bg-green-400/10 hover:scale-105 active:scale-95">
-            <i class="fab fa-whatsapp text-xl text-green-400 group-hover:scale-110 transition-transform"></i>
-            Ordina Asporto
-          </a>
-        </div>
-
-        <!-- Mini statistiche -->
-        <div class="animate-fade-in-up delay-500 flex flex-wrap gap-6 justify-center lg:justify-start">
-          <div class="flex items-center gap-3">
-            <div class="flex items-center justify-center w-10 h-10 rounded-full bg-red-500/20 border border-red-500/30">
-              <i class="fas fa-fire text-red-300 text-sm"></i>
+          <!-- Stats -->
+          <div class="mt-16 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0">
+            <div class="text-center lg:text-left">
+              <div class="text-brand-gold font-black text-3xl">30'</div>
+              <div class="text-white/60 text-xs uppercase tracking-widest font-bold">Consegna</div>
             </div>
-            <div>
-              <div class="text-white font-bold text-sm">Forno</div>
-              <div class="text-red-300 font-black text-lg leading-tight">350°C</div>
+            <div class="text-center lg:text-left border-x border-white/10">
+              <div class="text-brand-gold font-black text-3xl">72h</div>
+              <div class="text-white/60 text-xs uppercase tracking-widest font-bold">Lievitazione</div>
+            </div>
+            <div class="text-center lg:text-left">
+              <div class="text-brand-gold font-black text-3xl">100%</div>
+              <div class="text-white/60 text-xs uppercase tracking-widest font-bold">Bio</div>
             </div>
           </div>
-          <div class="w-px bg-white/10 hidden sm:block"></div>
-          <div class="flex items-center gap-3">
-            <div class="flex items-center justify-center w-10 h-10 rounded-full bg-green-500/20 border border-green-500/30">
-              <i class="fas fa-leaf text-green-300 text-sm"></i>
+        </div>
+
+        <!-- 3D Pizza Chart Integration -->
+        <div class="hidden lg:flex flex-col items-center animate-fade-in delay-300">
+          <div class="bg-white/95 p-8 rounded-[40px] shadow-2xl border border-white/20 backdrop-blur-md w-full max-w-lg">
+            <div class="text-center mb-4">
+              <h3 class="text-2xl font-black text-brand-dark">La Nostra Ricetta</h3>
+              <p class="text-sm text-brand-green font-bold uppercase tracking-widest">Equilibrio Perfetto</p>
             </div>
-            <div>
-              <div class="text-white font-bold text-sm">Ingredienti</div>
-              <div class="text-green-300 font-black text-lg leading-tight">100% Bio</div>
-            </div>
-          </div>
-          <div class="w-px bg-white/10 hidden sm:block"></div>
-          <div class="flex items-center gap-3">
-            <div class="flex items-center justify-center w-10 h-10 rounded-full bg-yellow-500/20 border border-yellow-500/30">
-              <i class="fas fa-clock text-yellow-300 text-sm"></i>
-            </div>
-            <div>
-              <div class="text-white font-bold text-sm">Consegna</div>
-              <div class="text-yellow-300 font-black text-lg leading-tight">30 min</div>
+            
+            <div id="chart-container"></div>
+            <div class="legend" id="legend"></div>
+            
+            <div class="mt-6 text-center">
+              <p class="text-[10px] text-gray-400 uppercase tracking-widest">Trascina per ruotare · Passa sopra per i dettagli</p>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Scroll indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce-slow">
-      <a href="#perche-noi" aria-label="Scorri in basso">
-        <div class="flex flex-col items-center gap-1">
-          <span class="text-white/40 text-xs tracking-widest uppercase font-medium">Scopri</span>
-          <i class="fas fa-chevron-down text-red-300 text-lg"></i>
-        </div>
+    <!-- Scroll Down Indicator -->
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 animate-bounce-slow">
+      <a href="#perche-noi" class="text-white/40 hover:text-white transition-colors">
+        <i class="fas fa-chevron-down text-2xl"></i>
       </a>
     </div>
   </section>
 
-
   <!-- ============================================================
-       PERCHÉ SCEGLIERCI (Punti di forza)
+       PERCHÉ SCEGLIERE NOI (Qualità)
        ============================================================ -->
-  <section id="perche-noi" class="py-20 lg:py-28" style="background: #FFF8F0;">
+  <section id="perche-noi" class="py-24 bg-brand-cream relative overflow-hidden">
+    <!-- Decorative Ingredients -->
+    <img src="https://cdn-icons-png.flaticon.com/512/1135/1135555.png" class="absolute top-20 left-10 w-16 opacity-10 ingredient-float" alt="basilico" />
+    <img src="https://cdn-icons-png.flaticon.com/512/1135/1135560.png" class="absolute bottom-20 right-10 w-20 opacity-10 ingredient-float" style="animation-delay: 1s" alt="pomodoro" />
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-      <!-- Intestazione sezione -->
-      <div class="text-center mb-16 reveal">
-        <p class="text-brand-red font-semibold text-sm tracking-widest uppercase mb-3">La Nostra Filosofia</p>
-        <h2 class="section-title text-3xl sm:text-4xl lg:text-5xl font-black text-brand-dark">
-          Perché Scegliere Noi
-        </h2>
-        <p class="mt-6 text-slate-600 text-lg max-w-2xl mx-auto">
-          Tradizione, qualità e passione in ogni pizza. Ecco cosa ci rende speciali.
-        </p>
+      <div class="text-center mb-20 reveal">
+        <h2 class="text-4xl md:text-5xl font-black text-brand-dark mb-4 section-title">Il Segreto della Nostra Pizza</h2>
+        <p class="text-brand-green font-bold uppercase tracking-[0.2em] text-sm">Qualità senza compromessi</p>
       </div>
 
-      <!-- Grid 3 colonne -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-        <!-- Card 1: Ingredienti -->
-        <div class="reveal card-lift relative rounded-2xl p-8 text-center bg-white border border-slate-100">
-          <div class="pizza-icon-wrap inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6 mx-auto"
-               style="background: linear-gradient(135deg, rgba(211,47,47,0.15), rgba(183,28,28,0.15)); border: 1px solid rgba(211,47,47,0.25);">
-            <i class="fas fa-leaf text-brand-green text-3xl"></i>
+      <div class="grid md:grid-cols-3 gap-10">
+        <!-- Card 1 -->
+        <div class="bg-white p-10 rounded-[32px] shadow-card card-lift text-center reveal delay-100">
+          <div class="pizza-icon-wrap w-20 h-20 bg-brand-red/10 rounded-2xl flex items-center justify-center mx-auto mb-8">
+            <i class="fas fa-leaf text-brand-red text-4xl"></i>
           </div>
-          <h3 class="text-brand-dark font-bold text-xl mb-3">Ingredienti Freschi</h3>
-          <p class="text-slate-600 leading-relaxed">
-            Utilizziamo solo <strong>ingredienti biologici</strong> a km 0. Mozzarella di bufala, pomodori San Marzano, olio EVO. Niente conservanti.
+          <h3 class="text-2xl font-bold mb-4">Ingredienti DOC</h3>
+          <p class="text-gray-600 leading-relaxed">
+            Utilizziamo solo Pomodoro San Marzano DOP, Mozzarella di Bufala Campana e Olio EVO delle migliori colline italiane.
           </p>
-          <div class="mt-6 pt-6 border-t border-slate-200">
-            <span class="text-brand-red font-black text-2xl">100%</span>
-            <span class="text-slate-500 text-sm ml-1">naturale</span>
-          </div>
         </div>
 
-        <!-- Card 2: Impasto -->
-        <div class="reveal card-lift relative rounded-2xl p-8 text-center bg-white border border-brand-red/20">
-          <div class="ribbon">Specialità</div>
-          <div class="pizza-icon-wrap inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6 mx-auto"
-               style="background: linear-gradient(135deg, rgba(211,47,47,0.20), rgba(183,28,28,0.20)); border: 1px solid rgba(211,47,47,0.35);">
-            <i class="fas fa-hourglass-end text-brand-red text-3xl"></i>
+        <!-- Card 2 -->
+        <div class="bg-white p-10 rounded-[32px] shadow-card card-lift text-center reveal delay-200">
+          <div class="pizza-icon-wrap w-20 h-20 bg-brand-green/10 rounded-2xl flex items-center justify-center mx-auto mb-8">
+            <i class="fas fa-clock text-brand-green text-4xl"></i>
           </div>
-          <h3 class="text-brand-dark font-bold text-xl mb-3">Impasto Lievitato</h3>
-          <p class="text-slate-600 leading-relaxed">
-            Lievitazione <strong>72 ore</strong> a freddo. Impasto digeribile, leggero e croccante. Ricetta tramandata da 3 generazioni.
+          <h3 class="text-2xl font-bold mb-4">Lunga Lievitazione</h3>
+          <p class="text-gray-600 leading-relaxed">
+            Il nostro impasto riposa per almeno 72 ore. Il risultato? Una pizza leggera, digeribile e incredibilmente fragrante.
           </p>
-          <div class="mt-6 pt-6 border-t border-slate-200">
-            <span class="text-brand-red font-black text-2xl">72h</span>
-            <span class="text-slate-500 text-sm ml-1">di lievitazione</span>
-          </div>
         </div>
 
-        <!-- Card 3: Forno -->
-        <div class="reveal card-lift relative rounded-2xl p-8 text-center bg-white border border-slate-100">
-          <div class="pizza-icon-wrap inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6 mx-auto"
-               style="background: linear-gradient(135deg, rgba(211,47,47,0.15), rgba(183,28,28,0.15)); border: 1px solid rgba(211,47,47,0.25);">
-            <i class="fas fa-fire text-brand-red text-3xl"></i>
+        <!-- Card 3 -->
+        <div class="bg-white p-10 rounded-[32px] shadow-card card-lift text-center reveal delay-300">
+          <div class="pizza-icon-wrap w-20 h-20 bg-brand-gold/10 rounded-2xl flex items-center justify-center mx-auto mb-8">
+            <i class="fas fa-fire-alt text-brand-gold text-4xl"></i>
           </div>
-          <h3 class="text-brand-dark font-bold text-xl mb-3">Forno a Legna</h3>
-          <p class="text-slate-600 leading-relaxed">
-            Forno tradizionale a legna a <strong>350°C</strong>. Cottura in 90 secondi. Crosta croccante fuori, soffice dentro.
+          <h3 class="text-2xl font-bold mb-4">Forno a Legna</h3>
+          <p class="text-gray-600 leading-relaxed">
+            La cottura avviene rigorosamente in forno a legna a 450°C, per garantire quel cornicione alveolato e il sapore unico di una volta.
           </p>
-          <div class="mt-6 pt-6 border-t border-slate-200">
-            <span class="text-brand-red font-black text-2xl">350°</span>
-            <span class="text-slate-500 text-sm ml-1">di calore</span>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Barra statistiche -->
-      <div class="mt-16 reveal rounded-2xl p-8 grid grid-cols-2 lg:grid-cols-4 gap-8 text-center bg-gradient-to-r from-red-50 to-green-50 border border-red-200/30">
-        <div>
-          <div class="stat-number">+5000</div>
-          <div class="text-slate-600 text-sm mt-1 font-medium">Clienti Felici</div>
-        </div>
-        <div>
-          <div class="stat-number">30+</div>
-          <div class="text-slate-600 text-sm mt-1 font-medium">Varietà di Pizza</div>
-        </div>
-        <div>
-          <div class="stat-number">4.8★</div>
-          <div class="text-slate-600 text-sm mt-1 font-medium">Rating Google</div>
-        </div>
-        <div>
-          <div class="stat-number">15</div>
-          <div class="text-slate-600 text-sm mt-1 font-medium">Anni di Esperienza</div>
         </div>
       </div>
-
     </div>
   </section>
 
-
   <!-- ============================================================
-       LE NOSTRE SPECIALITÀ (Menu)
+       I NOSTRI SERVIZI / MENU (Griglia)
        ============================================================ -->
-  <section id="menu" class="py-20 lg:py-28" style="background: #1A1410;">
+  <section id="menu" class="py-24 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-      <!-- Intestazione -->
-      <div class="text-center mb-16 reveal">
-        <p class="text-red-400 font-semibold text-sm tracking-widest uppercase mb-3">Scopri i Sapori</p>
-        <h2 class="section-title text-3xl sm:text-4xl lg:text-5xl font-black text-white">
-          Le Nostre Specialità
-        </h2>
-        <p class="mt-6 text-slate-400 text-lg max-w-2xl mx-auto">
-          Ogni pizza è un capolavoro. Dalla classica Margherita alle nostre creazioni esclusive.
-        </p>
+      <div class="text-center mb-20 reveal">
+        <h2 class="text-4xl md:text-5xl font-black text-brand-dark mb-4 section-title">Le Nostre Specialità</h2>
+        <p class="text-brand-red font-bold uppercase tracking-[0.2em] text-sm">Dalla tradizione alla creatività</p>
       </div>
 
-      <!-- Grid 6 pizze -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-        <!-- Pizza 1: Margherita -->
-        <div class="reveal card-lift menu-item bg-white rounded-2xl overflow-hidden shadow-card border border-slate-100 relative">
-          <div class="h-48 bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center text-6xl">
-            🍕
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Pizza 1 -->
+        <div class="menu-item group relative bg-brand-gray rounded-[40px] overflow-hidden reveal delay-100">
+          <div class="h-64 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1574071318508-1cdbad80ad38?q=80&w=2070" alt="Margherita" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
           </div>
-          <div class="p-6">
-            <h3 class="font-bold text-brand-dark text-lg mb-2">Margherita</h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-4">
-              Pomodoro San Marzano, mozzarella di bufala, basilico fresco, olio EVO.
-            </p>
-            <div class="flex items-center justify-between">
-              <span class="text-brand-red font-black text-2xl">€8,50</span>
-              <button class="px-4 py-2 rounded-lg bg-brand-red text-white text-sm font-bold hover:bg-brand-darkred transition-colors">
-                <i class="fas fa-shopping-cart mr-1"></i>Ordina
-              </button>
+          <div class="p-8">
+            <div class="flex justify-between items-start mb-4">
+              <h3 class="text-2xl font-bold">Margherita DOP</h3>
+              <span class="text-brand-red font-black text-xl">€8.50</span>
             </div>
+            <p class="text-gray-500 text-sm mb-6">Pomodoro San Marzano, Mozzarella di Bufala, Basilico fresco, Olio EVO.</p>
+            <button class="w-full py-3 rounded-2xl border-2 border-brand-red text-brand-red font-bold hover:bg-brand-red hover:text-white transition-all">Ordina Ora</button>
+          </div>
+          <div class="ribbon">Classica</div>
+        </div>
+
+        <!-- Pizza 2 -->
+        <div class="menu-item group relative bg-brand-gray rounded-[40px] overflow-hidden reveal delay-200">
+          <div class="h-64 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?q=80&w=2076" alt="Diavola" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </div>
+          <div class="p-8">
+            <div class="flex justify-between items-start mb-4">
+              <h3 class="text-2xl font-bold">Diavola Piccante</h3>
+              <span class="text-brand-red font-black text-xl">€9.50</span>
+            </div>
+            <p class="text-gray-500 text-sm mb-6">Pomodoro, Fiordilatte, Salame piccante calabrese, Peperoncino, Olive.</p>
+            <button class="w-full py-3 rounded-2xl border-2 border-brand-red text-brand-red font-bold hover:bg-brand-red hover:text-white transition-all">Ordina Ora</button>
+          </div>
+          <div class="ribbon">Piccante</div>
+        </div>
+
+        <!-- Pizza 3 -->
+        <div class="menu-item group relative bg-brand-gray rounded-[40px] overflow-hidden reveal delay-300">
+          <div class="h-64 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070" alt="Quattro Formaggi" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </div>
+          <div class="p-8">
+            <div class="flex justify-between items-start mb-4">
+              <h3 class="text-2xl font-bold">4 Formaggi</h3>
+              <span class="text-brand-red font-black text-xl">€10.50</span>
+            </div>
+            <p class="text-gray-500 text-sm mb-6">Fiordilatte, Gorgonzola DOP, Parmigiano Reggiano 24 mesi, Pecorino.</p>
+            <button class="w-full py-3 rounded-2xl border-2 border-brand-red text-brand-red font-bold hover:bg-brand-red hover:text-white transition-all">Ordina Ora</button>
           </div>
         </div>
 
-        <!-- Pizza 2: Diavola -->
-        <div class="reveal card-lift menu-item bg-white rounded-2xl overflow-hidden shadow-card border border-slate-100 relative">
-          <div class="ribbon">Piccante!</div>
-          <div class="h-48 bg-gradient-to-br from-orange-400 to-red-600 flex items-center justify-center text-6xl">
-            🌶️
+        <!-- Pizza 4 -->
+        <div class="menu-item group relative bg-brand-gray rounded-[40px] overflow-hidden reveal delay-100">
+          <div class="h-64 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1593504049359-74330189a345?q=80&w=1854" alt="Vegetariana" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
           </div>
-          <div class="p-6">
-            <h3 class="font-bold text-brand-dark text-lg mb-2">Diavola</h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-4">
-              Pomodoro, mozzarella, salsiccia piccante, peperoncino, aglio.
-            </p>
-            <div class="flex items-center justify-between">
-              <span class="text-brand-red font-black text-2xl">€10,50</span>
-              <button class="px-4 py-2 rounded-lg bg-brand-red text-white text-sm font-bold hover:bg-brand-darkred transition-colors">
-                <i class="fas fa-shopping-cart mr-1"></i>Ordina
-              </button>
+          <div class="p-8">
+            <div class="flex justify-between items-start mb-4">
+              <h3 class="text-2xl font-bold">Ortolana</h3>
+              <span class="text-brand-red font-black text-xl">€9.00</span>
             </div>
+            <p class="text-gray-500 text-sm mb-6">Fiordilatte, Zucchine, Melanzane e Peperoni grigliati, Pomodorini.</p>
+            <button class="w-full py-3 rounded-2xl border-2 border-brand-red text-brand-red font-bold hover:bg-brand-red hover:text-white transition-all">Ordina Ora</button>
+          </div>
+          <div class="ribbon">Veggie</div>
+        </div>
+
+        <!-- Pizza 5 -->
+        <div class="menu-item group relative bg-brand-gray rounded-[40px] overflow-hidden reveal delay-200">
+          <div class="h-64 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1981" alt="Capricciosa" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          </div>
+          <div class="p-8">
+            <div class="flex justify-between items-start mb-4">
+              <h3 class="text-2xl font-bold">Capricciosa</h3>
+              <span class="text-brand-red font-black text-xl">€11.00</span>
+            </div>
+            <p class="text-gray-500 text-sm mb-6">Pomodoro, Fiordilatte, Prosciutto cotto, Funghi, Carciofini, Olive.</p>
+            <button class="w-full py-3 rounded-2xl border-2 border-brand-red text-brand-red font-bold hover:bg-brand-red hover:text-white transition-all">Ordina Ora</button>
           </div>
         </div>
 
-        <!-- Pizza 3: Quattro Formaggi -->
-        <div class="reveal card-lift menu-item bg-white rounded-2xl overflow-hidden shadow-card border border-slate-100 relative">
-          <div class="h-48 bg-gradient-to-br from-yellow-300 to-orange-400 flex items-center justify-center text-6xl">
-            🧀
+        <!-- Pizza 6 -->
+        <div class="menu-item group relative bg-brand-gray rounded-[40px] overflow-hidden reveal delay-300">
+          <div class="h-64 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1594007654729-407eedc4be65?q=80&w=1928" alt="Calzone" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
           </div>
-          <div class="p-6">
-            <h3 class="font-bold text-brand-dark text-lg mb-2">Quattro Formaggi</h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-4">
-              Mozzarella, gorgonzola, parmigiano, ricotta. Cremosa e saporita.
-            </p>
-            <div class="flex items-center justify-between">
-              <span class="text-brand-red font-black text-2xl">€11,00</span>
-              <button class="px-4 py-2 rounded-lg bg-brand-red text-white text-sm font-bold hover:bg-brand-darkred transition-colors">
-                <i class="fas fa-shopping-cart mr-1"></i>Ordina
-              </button>
+          <div class="p-8">
+            <div class="flex justify-between items-start mb-4">
+              <h3 class="text-2xl font-bold">Calzone Reale</h3>
+              <span class="text-brand-red font-black text-xl">€10.00</span>
             </div>
+            <p class="text-gray-500 text-sm mb-6">Ripieno di Ricotta, Fiordilatte, Salame, Pomodoro e Pepe.</p>
+            <button class="w-full py-3 rounded-2xl border-2 border-brand-red text-brand-red font-bold hover:bg-brand-red hover:text-white transition-all">Ordina Ora</button>
           </div>
+          <div class="ribbon">Special</div>
         </div>
-
-        <!-- Pizza 4: Vegetariana -->
-        <div class="reveal card-lift menu-item bg-white rounded-2xl overflow-hidden shadow-card border border-slate-100 relative">
-          <div class="h-48 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-6xl">
-            🥒
-          </div>
-          <div class="p-6">
-            <h3 class="font-bold text-brand-dark text-lg mb-2">Vegetariana</h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-4">
-              Pomodoro, mozzarella, zucchine, melanzane, peperoni, cipolla.
-            </p>
-            <div class="flex items-center justify-between">
-              <span class="text-brand-red font-black text-2xl">€9,50</span>
-              <button class="px-4 py-2 rounded-lg bg-brand-red text-white text-sm font-bold hover:bg-brand-darkred transition-colors">
-                <i class="fas fa-shopping-cart mr-1"></i>Ordina
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pizza 5: Carbonara -->
-        <div class="reveal card-lift menu-item bg-white rounded-2xl overflow-hidden shadow-card border border-slate-100 relative">
-          <div class="h-48 bg-gradient-to-br from-amber-600 to-red-600 flex items-center justify-center text-6xl">
-            🥓
-          </div>
-          <div class="p-6">
-            <h3 class="font-bold text-brand-dark text-lg mb-2">Carbonara</h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-4">
-              Mozzarella, guanciale, uovo, parmigiano, pepe nero.
-            </p>
-            <div class="flex items-center justify-between">
-              <span class="text-brand-red font-black text-2xl">€10,50</span>
-              <button class="px-4 py-2 rounded-lg bg-brand-red text-white text-sm font-bold hover:bg-brand-darkred transition-colors">
-                <i class="fas fa-shopping-cart mr-1"></i>Ordina
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pizza 6: Speciale della Casa -->
-        <div class="reveal card-lift menu-item bg-white rounded-2xl overflow-hidden shadow-card border border-brand-red/20 relative">
-          <div class="ribbon">Consigliata</div>
-          <div class="h-48 bg-gradient-to-br from-red-500 via-orange-400 to-yellow-400 flex items-center justify-center text-6xl">
-            ⭐
-          </div>
-          <div class="p-6">
-            <h3 class="font-bold text-brand-dark text-lg mb-2">Speciale della Casa</h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-4">
-              Pomodoro, mozzarella, speck, rucola, parmigiano, tartufo nero.
-            </p>
-            <div class="flex items-center justify-between">
-              <span class="text-brand-red font-black text-2xl">€13,00</span>
-              <button class="px-4 py-2 rounded-lg bg-brand-red text-white text-sm font-bold hover:bg-brand-darkred transition-colors">
-                <i class="fas fa-shopping-cart mr-1"></i>Ordina
-              </button>
-            </div>
-          </div>
-        </div>
-
       </div>
 
-      <!-- CTA sotto menu -->
-      <div class="text-center mt-12 reveal">
-        <a href="#contatti"
-           class="inline-flex items-center gap-3 px-10 py-4 rounded-2xl font-bold text-lg text-white transition-all duration-300 hover:scale-105 active:scale-95"
-           style="background: linear-gradient(135deg, #D32F2F, #B71C1C); box-shadow: 0 8px 32px rgba(211,47,47,0.45);">
-          <i class="fas fa-phone"></i>
-          Visualizza Menu Completo
-        </a>
-      </div>
-
-    </div>
-  </section>
-
-
-  <!-- ============================================================
-       BANNER CONSEGNA / ASPORTO
-       ============================================================ -->
-  <section class="py-14" style="background: linear-gradient(135deg, #D32F2F 0%, #B71C1C 100%);">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left">
-        <div class="flex items-center gap-5">
-          <div class="flex items-center justify-center w-16 h-16 rounded-2xl bg-white/20 flex-shrink-0">
-            <i class="fas fa-motorcycle text-white text-2xl"></i>
-          </div>
-          <div>
-            <h3 class="text-white font-black text-2xl lg:text-3xl">Consegna Veloce</h3>
-            <p class="text-white/80 text-lg mt-1">Ordina ora e ricevi la tua pizza in <strong class="text-white">30 minuti</strong> a casa tua.</p>
-          </div>
-        </div>
-        <!-- MODIFICA: Sostituisci +39XXXXXXXXXX con il tuo numero di telefono -->
-        <a href="tel:+39XXXXXXXXXX"
-           class="flex-shrink-0 flex items-center gap-3 px-10 py-4 rounded-2xl font-black text-xl bg-white text-brand-red transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl">
-          <i class="fas fa-phone-alt animate-bounce-slow"></i>
-          <!-- MODIFICA: Inserisci il tuo numero di telefono visibile -->
-          +39 XXX XXX XXXX
+      <div class="mt-20 text-center reveal">
+        <a href="#" class="inline-flex items-center gap-3 text-brand-red font-black text-xl hover:gap-5 transition-all">
+          Vedi il Menu Completo
+          <i class="fas fa-arrow-right"></i>
         </a>
       </div>
     </div>
   </section>
 
+  <!-- ============================================================
+       BANNER URGENZA / DELIVERY
+       ============================================================ -->
+  <section class="py-16 bg-brand-red relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10 hero-pattern"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+        <div class="text-center md:text-left">
+          <h2 class="text-3xl md:text-4xl font-black text-white mb-2">Voglia di pizza a casa?</h2>
+          <p class="text-white/80 text-lg">Consegniamo in tutta la città in meno di 30 minuti!</p>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="tel:+39XXXXXXXXXX" class="bg-white text-brand-red px-8 py-4 rounded-full font-black text-lg shadow-xl hover:scale-105 transition-transform flex items-center gap-3">
+            <i class="fas fa-motorcycle animate-wiggle"></i>
+            Ordina Ora
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- ============================================================
        RECENSIONI (Riprova Sociale)
        ============================================================ -->
-  <section id="recensioni" class="py-20 lg:py-28" style="background: #FFF8F0;">
+  <section id="recensioni" class="py-24 bg-brand-cream">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-      <!-- Intestazione -->
-      <div class="text-center mb-16 reveal">
-        <p class="text-brand-red font-semibold text-sm tracking-widest uppercase mb-3">Cosa Dicono i Nostri Clienti</p>
-        <h2 class="section-title text-3xl sm:text-4xl lg:text-5xl font-black text-brand-dark">
-          Recensioni Autentiche
-        </h2>
-
-        <!-- Rating Google -->
-        <div class="flex items-center justify-center gap-3 mt-8">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png"
-               alt="Google" class="w-7 h-7 object-contain" />
-          <div class="flex gap-1">
-            <i class="fas fa-star star-filled text-xl"></i>
-            <i class="fas fa-star star-filled text-xl"></i>
-            <i class="fas fa-star star-filled text-xl"></i>
-            <i class="fas fa-star star-filled text-xl"></i>
-            <i class="fas fa-star star-filled text-xl"></i>
-          </div>
-          <span class="text-brand-dark font-black text-xl">4.8</span>
-          <span class="text-slate-600 text-sm">(342 recensioni)</span>
+      <div class="text-center mb-20 reveal">
+        <h2 class="text-4xl md:text-5xl font-black text-brand-dark mb-4 section-title">Cosa Dicono i Nostri Clienti</h2>
+        <div class="flex items-center justify-center gap-2 mb-4">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png" alt="Google" class="w-5 h-5" />
+          <span class="font-bold text-sm">4.9/5 su Google Reviews</span>
         </div>
       </div>
 
-      <!-- Grid recensioni -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
+      <div class="grid md:grid-cols-3 gap-8">
         <!-- Recensione 1 -->
-        <div class="reveal card-lift rounded-2xl p-8 relative bg-white border border-slate-100">
-          <div class="flex gap-1 mb-4">
-            <i class="fas fa-star star-filled"></i>
-            <i class="fas fa-star star-filled"></i>
-            <i class="fas fa-star star-filled"></i>
-            <i class="fas fa-star star-filled"></i>
-            <i class="fas fa-star star-filled"></i>
-          </div>
-          <blockquote class="text-slate-700 leading-relaxed mb-6 italic">
-            "La migliore pizza che abbia mai mangiato! L'impasto è incredibile, leggero e digeribile. Gli ingredienti sono freschi e di qualità. Tornerò sicuramente!"
-          </blockquote>
-          <div class="flex items-center gap-3 pt-5 border-t border-slate-200">
-            <div class="flex items-center justify-center w-11 h-11 rounded-full font-bold text-white text-sm"
-                 style="background: linear-gradient(135deg, #D32F2F, #B71C1C);">
-              MC
-            </div>
+        <div class="bg-white p-8 rounded-[32px] shadow-card reveal delay-100">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 bg-brand-red rounded-full flex items-center justify-center text-white font-bold">MC</div>
             <div>
-              <div class="text-brand-dark font-semibold text-sm">Marco Conti</div>
-              <div class="text-slate-500 text-xs">Milano · 3 giorni fa</div>
+              <h4 class="font-bold">Marco Cassani</h4>
+              <div class="flex text-xs star-filled">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+              </div>
             </div>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png"
-                 alt="Google" class="w-5 h-5 object-contain ml-auto opacity-60" />
           </div>
+          <p class="text-gray-600 italic leading-relaxed">
+            "La miglior pizza napoletana di Milano! Il cornicione è altissimo e soffice, proprio come a Napoli. Servizio veloce e personale gentilissimo."
+          </p>
         </div>
 
         <!-- Recensione 2 -->
-        <div class="reveal card-lift rounded-2xl p-8 relative bg-white border border-brand-red/20">
-          <div class="absolute top-4 right-4">
-            <span class="text-xs font-bold text-brand-red bg-red-100 px-2 py-1 rounded-full">Verificata</span>
-          </div>
-          <div class="flex gap-1 mb-4">
-            <i class="fas fa-star star-filled"></i>
-            <i class="fas fa-star star-filled"></i>
-            <i class="fas fa-star star-filled"></i>
-            <i class="fas fa-star star-filled"></i>
-            <i class="fas fa-star star-filled"></i>
-          </div>
-          <blockquote class="text-slate-700 leading-relaxed mb-6 italic">
-            "Consegna velocissima, pizza ancora calda! L'atmosfera del locale è accogliente, il personale è gentile e disponibile. Prezzo giusto per la qualità."
-          </blockquote>
-          <div class="flex items-center gap-3 pt-5 border-t border-slate-200">
-            <div class="flex items-center justify-center w-11 h-11 rounded-full font-bold text-white text-sm"
-                 style="background: linear-gradient(135deg, #D32F2F, #B71C1C);">
-              GR
-            </div>
+        <div class="bg-white p-8 rounded-[32px] shadow-card reveal delay-200">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 bg-brand-green rounded-full flex items-center justify-center text-white font-bold">EF</div>
             <div>
-              <div class="text-brand-dark font-semibold text-sm">Giulia Rossi</div>
-              <div class="text-slate-500 text-xs">Milano · 1 settimana fa</div>
+              <h4 class="font-bold">Elena Ferrari</h4>
+              <div class="flex text-xs star-filled">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+              </div>
             </div>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png"
-                 alt="Google" class="w-5 h-5 object-contain ml-auto opacity-60" />
           </div>
+          <p class="text-gray-600 italic leading-relaxed">
+            "Ho ordinato a domicilio e la pizza è arrivata caldissima e in anticipo. La qualità degli ingredienti si sente tutta. Consigliatissimo!"
+          </p>
         </div>
 
         <!-- Recensione 3 -->
-        <div class="reveal card-lift rounded-2xl p-8 relative bg-white border border-slate-100">
-          <div class="flex gap-1 mb-4">
-            <i class="fas fa-star star-filled"></i>
-            <i class="fas fa-star star-filled"></i>
-            <i class="fas fa-star star-filled"></i>
-            <i class="fas fa-star star-filled"></i>
-            <i class="fas fa-star star-filled"></i>
-          </div>
-          <blockquote class="text-slate-700 leading-relaxed mb-6 italic">
-            "Finalmente una vera pizzeria! Niente di artificiale, tutto fatto con cura e amore. La Speciale della Casa è un capolavoro. Consigliato a tutti!"
-          </blockquote>
-          <div class="flex items-center gap-3 pt-5 border-t border-slate-200">
-            <div class="flex items-center justify-center w-11 h-11 rounded-full font-bold text-white text-sm"
-                 style="background: linear-gradient(135deg, #D32F2F, #B71C1C);">
-              FV
-            </div>
+        <div class="bg-white p-8 rounded-[32px] shadow-card reveal delay-300">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 bg-brand-gold rounded-full flex items-center justify-center text-white font-bold">LB</div>
             <div>
-              <div class="text-brand-dark font-semibold text-sm">Francesca Verdi</div>
-              <div class="text-slate-500 text-xs">Sesto S.G. · 2 settimane fa</div>
+              <h4 class="font-bold">Luca Bianchi</h4>
+              <div class="flex text-xs star-filled">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+              </div>
             </div>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png"
-                 alt="Google" class="w-5 h-5 object-contain ml-auto opacity-60" />
           </div>
+          <p class="text-gray-600 italic leading-relaxed">
+            "Locale accogliente e pizza strepitosa. La lievitazione di 72 ore fa davvero la differenza, non ti senti per nulla appesantito. Tornerò sicuramente."
+          </p>
         </div>
-
       </div>
     </div>
   </section>
-
 
   <!-- ============================================================
-       SEZIONE CONTATTI
+       CONTACT US (Contatti)
        ============================================================ -->
-  <section id="contatti" class="py-20 lg:py-28" style="background: #1A1410;">
+  <section id="contatti" class="py-24 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        
+        <!-- Info Contatti -->
+        <div class="reveal">
+          <h2 class="text-4xl md:text-5xl font-black text-brand-dark mb-8">Vieni a Trovarci o Prenota</h2>
+          <p class="text-gray-600 text-lg mb-10">
+            Siamo nel cuore di Milano, pronti a farti assaggiare la vera tradizione. Per gruppi numerosi o eventi privati, contattaci direttamente.
+          </p>
 
-      <!-- Intestazione -->
-      <div class="text-center mb-16 reveal">
-        <p class="text-red-400 font-semibold text-sm tracking-widest uppercase mb-3">Vieni a Trovarci</p>
-        <h2 class="section-title text-3xl sm:text-4xl lg:text-5xl font-black text-white">
-          Contatti e Prenotazioni
-        </h2>
-        <p class="mt-6 text-slate-400 text-lg max-w-2xl mx-auto">
-          Prenota il tuo tavolo o ordina il tuo asporto. Siamo qui per servirti!
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16">
-
-        <!-- FORM DI CONTATTO (3 colonne) -->
-        <div class="lg:col-span-3 reveal">
-          <div class="bg-white rounded-3xl p-8 lg:p-10 shadow-card-lg border border-slate-100">
-            <h3 class="text-brand-dark font-bold text-xl mb-6 flex items-center gap-3">
-              <span class="flex items-center justify-center w-9 h-9 rounded-xl"
-                    style="background: linear-gradient(135deg, #D32F2F, #B71C1C);">
-                <i class="fas fa-calendar text-white text-sm"></i>
-              </span>
-              Prenota il Tuo Tavolo
-            </h3>
-
-            <form id="contact-form" class="space-y-5" novalidate>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <!-- Nome -->
-                <div>
-                  <label for="nome" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                    Nome e Cognome <span class="text-red-500">*</span>
-                  </label>
-                  <input type="text" id="nome" name="nome" required
-                         placeholder="Mario Rossi"
-                         class="form-input w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-800 text-sm bg-slate-50 transition-all duration-200 placeholder-slate-400" />
-                </div>
-                <!-- Telefono -->
-                <div>
-                  <label for="telefono" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                    Telefono <span class="text-red-500">*</span>
-                  </label>
-                  <input type="tel" id="telefono" name="telefono" required
-                         placeholder="+39 333 000 0000"
-                         class="form-input w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-800 text-sm bg-slate-50 transition-all duration-200 placeholder-slate-400" />
-                </div>
+          <div class="space-y-8">
+            <div class="flex items-start gap-6">
+              <div class="w-12 h-12 bg-brand-red/10 rounded-xl flex items-center justify-center shrink-0">
+                <i class="fas fa-map-marker-alt text-brand-red text-xl"></i>
               </div>
-
-              <!-- Email -->
               <div>
-                <label for="email" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                  Indirizzo Email
-                </label>
-                <input type="email" id="email" name="email"
-                       placeholder="mario@esempio.it"
-                       class="form-input w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-800 text-sm bg-slate-50 transition-all duration-200 placeholder-slate-400" />
+                <h4 class="font-bold text-lg">Indirizzo</h4>
+                <!-- MODIFICA: Inserisci il tuo indirizzo -->
+                <p class="text-gray-500">Via Roma 123, 20100 Milano (MI)</p>
               </div>
-
-              <!-- Messaggio -->
-              <div>
-                <label for="messaggio" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                  Numero Persone e Orario <span class="text-red-500">*</span>
-                </label>
-                <textarea id="messaggio" name="messaggio" rows="4" required
-                          placeholder="Es: 4 persone, sabato ore 20:00. Voglio prenotare un tavolo tranquillo..."
-                          class="form-input w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-800 text-sm bg-slate-50 transition-all duration-200 placeholder-slate-400 resize-none"></textarea>
-              </div>
-
-              <!-- Privacy -->
-              <div class="flex items-start gap-3">
-                <input type="checkbox" id="privacy" name="privacy" required
-                       class="mt-0.5 w-4 h-4 rounded border-slate-300 accent-brand-red cursor-pointer" />
-                <label for="privacy" class="text-xs text-slate-500 cursor-pointer leading-relaxed">
-                  Acconsento al trattamento dei dati personali ai sensi del
-                  <a href="#privacy-policy" class="text-brand-red hover:underline font-medium">Regolamento GDPR (UE) 2016/679</a>
-                  e della nostra
-                  <a href="#privacy-policy" class="text-brand-red hover:underline font-medium">Privacy Policy</a>.
-                </label>
-              </div>
-
-              <!-- Submit -->
-              <button type="submit"
-                      class="w-full flex items-center justify-center gap-3 py-4 rounded-2xl font-bold text-lg text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-                      style="background: linear-gradient(135deg, #D32F2F, #B71C1C); box-shadow: 0 8px 32px rgba(211,47,47,0.45);">
-                <i class="fas fa-paper-plane"></i>
-                Invia Prenotazione
-              </button>
-
-            </form>
-
-            <!-- Messaggio di successo (nascosto di default) -->
-            <div id="form-success"
-                 class="hidden mt-6 p-5 rounded-2xl bg-green-50 border border-green-200 text-center">
-              <i class="fas fa-check-circle text-green-500 text-3xl mb-3"></i>
-              <p class="text-green-800 font-bold text-lg">Prenotazione confermata!</p>
-              <p class="text-green-600 text-sm mt-1">Ti aspettiamo! Controlla la tua email per i dettagli.</p>
             </div>
+
+            <div class="flex items-start gap-6">
+              <div class="w-12 h-12 bg-brand-green/10 rounded-xl flex items-center justify-center shrink-0">
+                <i class="fas fa-phone-alt text-brand-green text-xl"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg">Telefono</h4>
+                <!-- MODIFICA: Inserisci il tuo numero -->
+                <p class="text-gray-500">+39 XXX XXX XXXX</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-6">
+              <div class="w-12 h-12 bg-brand-gold/10 rounded-xl flex items-center justify-center shrink-0">
+                <i class="fas fa-clock text-brand-gold text-xl"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg">Orari di Apertura</h4>
+                <div class="text-gray-500 grid grid-cols-2 gap-x-4">
+                  <span>Lun - Ven:</span> <span>12:00 - 15:00 / 19:00 - 23:30</span>
+                  <span>Sab - Dom:</span> <span>12:00 - 00:00 (Orario Continuato)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-12">
+            <a href="https://wa.me/39XXXXXXXXXX" class="inline-flex items-center gap-3 bg-[#25D366] hover:bg-[#128C7E] text-white px-8 py-4 rounded-2xl font-black text-lg transition-all shadow-lg">
+              <i class="fab fa-whatsapp text-2xl"></i>
+              Prenota su WhatsApp
+            </a>
           </div>
         </div>
 
-        <!-- INFO CONTATTI (2 colonne) -->
-        <div class="lg:col-span-2 reveal space-y-6">
-
-          <!-- Indirizzo -->
-          <!-- MODIFICA: Aggiorna indirizzo, telefono, email e orari -->
-          <div class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 flex gap-4">
-            <div class="flex items-center justify-center w-12 h-12 rounded-xl flex-shrink-0"
-                 style="background: linear-gradient(135deg, rgba(211,47,47,0.12), rgba(183,28,28,0.08)); border: 1px solid rgba(211,47,47,0.2);">
-              <i class="fas fa-map-marker-alt text-brand-red text-lg"></i>
-            </div>
-            <div>
-              <h4 class="font-bold text-brand-dark text-sm mb-1">Indirizzo</h4>
-              <!-- MODIFICA: Inserisci il tuo indirizzo -->
-              <p class="text-slate-600 text-sm leading-relaxed">Via Roma 123<br />20100 Milano (MI)</p>
-            </div>
-          </div>
-
-          <!-- Telefono -->
-          <div class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 flex gap-4">
-            <div class="flex items-center justify-center w-12 h-12 rounded-xl flex-shrink-0"
-                 style="background: linear-gradient(135deg, rgba(211,47,47,0.12), rgba(183,28,28,0.08)); border: 1px solid rgba(211,47,47,0.2);">
-              <i class="fas fa-phone-alt text-brand-red text-lg"></i>
-            </div>
-            <div>
-              <h4 class="font-bold text-brand-dark text-sm mb-1">Telefono</h4>
-              <!-- MODIFICA: Inserisci il tuo numero di telefono -->
-              <a href="tel:+39XXXXXXXXXX" class="text-brand-red font-semibold text-sm hover:underline">+39 XXX XXX XXXX</a>
-              <p class="text-slate-500 text-xs mt-0.5">Prenota il tuo tavolo</p>
-            </div>
-          </div>
-
-          <!-- Email -->
-          <div class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 flex gap-4">
-            <div class="flex items-center justify-center w-12 h-12 rounded-xl flex-shrink-0"
-                 style="background: linear-gradient(135deg, rgba(211,47,47,0.12), rgba(183,28,28,0.08)); border: 1px solid rgba(211,47,47,0.2);">
-              <i class="fas fa-envelope text-brand-red text-lg"></i>
-            </div>
-            <div>
-              <h4 class="font-bold text-brand-dark text-sm mb-1">Email</h4>
-              <!-- MODIFICA: Inserisci la tua email -->
-              <a href="mailto:info@laveerapizza.it" class="text-brand-red font-semibold text-sm hover:underline">info@laveerapizza.it</a>
-            </div>
-          </div>
-
-          <!-- Orari -->
-          <div class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 flex gap-4">
-            <div class="flex items-center justify-center w-12 h-12 rounded-xl flex-shrink-0"
-                 style="background: linear-gradient(135deg, rgba(211,47,47,0.12), rgba(183,28,28,0.08)); border: 1px solid rgba(211,47,47,0.2);">
-              <i class="fas fa-clock text-brand-red text-lg"></i>
-            </div>
-            <div class="w-full">
-              <h4 class="font-bold text-brand-dark text-sm mb-3">Orari di Apertura</h4>
-              <!-- MODIFICA: Aggiorna gli orari di apertura -->
-              <div class="space-y-1.5 text-sm">
-                <div class="flex justify-between">
-                  <span class="text-slate-600">Lun – Gio</span>
-                  <span class="text-brand-dark font-semibold">18:00 – 23:30</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-slate-600">Ven – Sab</span>
-                  <span class="text-brand-dark font-semibold">18:00 – 00:30</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-slate-600">Domenica</span>
-                  <span class="text-brand-dark font-semibold">12:00 – 23:00</span>
-                </div>
-                <div class="mt-3 pt-3 border-t border-slate-200 flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse-slow"></span>
-                  <span class="text-green-600 font-semibold text-xs">Aperto 7 giorni su 7</span>
-                </div>
+        <!-- Form Contatti -->
+        <div class="bg-brand-gray p-10 rounded-[40px] shadow-card reveal delay-200">
+          <h3 class="text-2xl font-bold mb-8">Inviaci un Messaggio</h3>
+          <form id="contact-form" class="space-y-5">
+            <div class="grid md:grid-cols-2 gap-5">
+              <div>
+                <label class="block text-sm font-bold mb-2 ml-1">Nome</label>
+                <input type="text" required placeholder="Il tuo nome" class="form-input w-full bg-white border-none px-6 py-4 rounded-2xl shadow-sm" />
+              </div>
+              <div>
+                <label class="block text-sm font-bold mb-2 ml-1">Telefono</label>
+                <input type="tel" required placeholder="Il tuo numero" class="form-input w-full bg-white border-none px-6 py-4 rounded-2xl shadow-sm" />
               </div>
             </div>
+            <div>
+              <label class="block text-sm font-bold mb-2 ml-1">Email</label>
+              <input type="email" required placeholder="La tua email" class="form-input w-full bg-white border-none px-6 py-4 rounded-2xl shadow-sm" />
+            </div>
+            <div>
+              <label class="block text-sm font-bold mb-2 ml-1">Messaggio / Prenotazione</label>
+              <textarea rows="4" required placeholder="Quante persone? A che ora?" class="form-input w-full bg-white border-none px-6 py-4 rounded-2xl shadow-sm"></textarea>
+            </div>
+            <button type="submit" class="w-full bg-brand-dark hover:bg-black text-white py-5 rounded-2xl font-black text-lg transition-all shadow-lg">
+              Invia Richiesta
+            </button>
+          </form>
+          <div id="form-success" class="hidden mt-6 p-4 bg-brand-green/10 border border-brand-green/20 text-brand-green rounded-2xl text-center font-bold">
+            Richiesta inviata! Ti risponderemo a breve. 🍕
           </div>
-
-          <!-- Bottone WhatsApp grande -->
-          <!-- MODIFICA: Sostituisci +39XXXXXXXXXX con il tuo numero WhatsApp -->
-          <a href="https://wa.me/39XXXXXXXXXX?text=Ciao!%20Vorrei%20ordinare%20una%20pizza."
-             target="_blank"
-             rel="noopener"
-             class="flex items-center justify-center gap-3 w-full py-4 rounded-2xl font-bold text-lg text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-xl"
-             style="background: linear-gradient(135deg, #25D366, #128C7E); box-shadow: 0 8px 32px rgba(37,211,102,0.35);">
-            <i class="fab fa-whatsapp text-2xl"></i>
-            Ordina su WhatsApp
-          </a>
-
         </div>
+
       </div>
     </div>
   </section>
-
 
   <!-- ============================================================
        FOOTER
        ============================================================ -->
-  <footer id="privacy-policy" style="background: #0D0A08;">
+  <footer class="bg-brand-dark text-white py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-      <!-- Footer top -->
-      <div class="py-14 grid grid-cols-1 md:grid-cols-3 gap-10 border-b border-white/8">
-
+      <div class="grid md:grid-cols-4 gap-12 mb-12">
+        
         <!-- Brand -->
-        <div>
-          <a href="#home" class="flex items-center gap-3 mb-5">
-            <div class="flex items-center justify-center w-10 h-10 rounded-lg"
-                 style="background: linear-gradient(135deg, #D32F2F, #B71C1C);">
-              <i class="fas fa-pizza-slice text-white text-lg"></i>
+        <div class="col-span-1 md:col-span-2">
+          <a href="#" class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 bg-brand-red rounded-lg flex items-center justify-center">
+              <i class="fas fa-pizza-slice text-white"></i>
             </div>
-            <!-- MODIFICA: Cambia il nome azienda nel footer -->
-            <span class="text-white font-black text-xl">La Vera<span class="text-gradient">Pizza</span></span>
+            <span class="font-black text-2xl tracking-tight">La Vera<span class="text-brand-red">Pizza</span></span>
           </a>
-          <p class="text-slate-400 text-sm leading-relaxed">
-            Pizzeria autentica a Milano. Forno a legna, ingredienti biologici, ricetta tradizionale. Aperto 7 giorni su 7.
+          <p class="text-white/50 max-w-sm leading-relaxed">
+            Portiamo l'arte della pizza napoletana nel cuore della tua città. Passione, tradizione e ingredienti di prima scelta.
           </p>
-          <!-- Social -->
-          <div class="flex gap-3 mt-6">
-            <a href="#" aria-label="Facebook"
-               class="flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 hover:bg-red-500/20 text-slate-400 hover:text-red-400 transition-all duration-200">
-              <i class="fab fa-facebook-f text-sm"></i>
-            </a>
-            <a href="#" aria-label="Instagram"
-               class="flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 hover:bg-red-500/20 text-slate-400 hover:text-red-400 transition-all duration-200">
-              <i class="fab fa-instagram text-sm"></i>
-            </a>
-            <a href="#" aria-label="TikTok"
-               class="flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 hover:bg-red-500/20 text-slate-400 hover:text-red-400 transition-all duration-200">
-              <i class="fab fa-tiktok text-sm"></i>
-            </a>
+          <div class="flex gap-4 mt-8">
+            <a href="#" class="w-10 h-10 bg-white/5 hover:bg-brand-red rounded-full flex items-center justify-center transition-all"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="w-10 h-10 bg-white/5 hover:bg-brand-red rounded-full flex items-center justify-center transition-all"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="w-10 h-10 bg-white/5 hover:bg-brand-red rounded-full flex items-center justify-center transition-all"><i class="fab fa-tiktok"></i></a>
           </div>
         </div>
 
-        <!-- Link utili -->
+        <!-- Links -->
         <div>
-          <h4 class="text-white font-bold text-sm mb-5 tracking-wide uppercase">Navigazione</h4>
-          <ul class="space-y-3">
-            <li><a href="#home"       class="text-slate-400 hover:text-red-400 text-sm transition-colors">Home</a></li>
-            <li><a href="#perche-noi" class="text-slate-400 hover:text-red-400 text-sm transition-colors">Chi Siamo</a></li>
-            <li><a href="#menu"       class="text-slate-400 hover:text-red-400 text-sm transition-colors">Menu</a></li>
-            <li><a href="#recensioni" class="text-slate-400 hover:text-red-400 text-sm transition-colors">Recensioni</a></li>
-            <li><a href="#contatti"   class="text-slate-400 hover:text-red-400 text-sm transition-colors">Contatti</a></li>
+          <h4 class="font-bold text-lg mb-6">Navigazione</h4>
+          <ul class="space-y-4 text-white/60">
+            <li><a href="#home" class="hover:text-brand-red transition-colors">Home</a></li>
+            <li><a href="#perche-noi" class="hover:text-brand-red transition-colors">Qualità</a></li>
+            <li><a href="#menu" class="hover:text-brand-red transition-colors">Menu</a></li>
+            <li><a href="#contatti" class="hover:text-brand-red transition-colors">Contatti</a></li>
           </ul>
         </div>
 
-        <!-- Contatti rapidi -->
+        <!-- Legal -->
         <div>
-          <h4 class="text-white font-bold text-sm mb-5 tracking-wide uppercase">Contatti Rapidi</h4>
-          <ul class="space-y-4">
-            <li class="flex items-center gap-3">
-              <i class="fas fa-phone-alt text-brand-red text-sm w-4"></i>
-              <!-- MODIFICA: Inserisci il tuo numero -->
-              <a href="tel:+39XXXXXXXXXX" class="text-slate-400 hover:text-white text-sm transition-colors">+39 XXX XXX XXXX</a>
-            </li>
-            <li class="flex items-center gap-3">
-              <i class="fas fa-envelope text-brand-red text-sm w-4"></i>
-              <!-- MODIFICA: Inserisci la tua email -->
-              <a href="mailto:info@laveerapizza.it" class="text-slate-400 hover:text-white text-sm transition-colors">info@laveerapizza.it</a>
-            </li>
-            <li class="flex items-start gap-3">
-              <i class="fas fa-map-marker-alt text-brand-red text-sm w-4 mt-0.5"></i>
-              <!-- MODIFICA: Inserisci il tuo indirizzo -->
-              <span class="text-slate-400 text-sm">Via Roma 123, 20100 Milano (MI)</span>
-            </li>
+          <h4 class="font-bold text-lg mb-6">Note Legali</h4>
+          <ul class="space-y-4 text-white/60">
+            <li><a href="#" class="hover:text-brand-red transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-brand-red transition-colors">Cookie Policy</a></li>
+            <li><a href="#" class="hover:text-brand-red transition-colors">Termini e Condizioni</a></li>
+            <!-- MODIFICA: Inserisci la tua P.IVA -->
+            <li>P.IVA: 00000000000</li>
           </ul>
         </div>
-
       </div>
 
-      <!-- Footer bottom -->
-      <div class="py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600">
-        <div class="flex flex-wrap items-center gap-x-4 gap-y-1 justify-center sm:justify-start">
-          <!-- MODIFICA: Aggiorna l'anno e il nome azienda -->
-          <span>&copy; 2024 La Vera Pizza S.r.l. Tutti i diritti riservati.</span>
-          <!-- MODIFICA: Inserisci la tua Partita IVA -->
-          <span>P.IVA 00000000000</span>
-        </div>
-        <div class="flex gap-4">
-          <a href="#" class="hover:text-slate-400 transition-colors">Privacy Policy</a>
-          <a href="#" class="hover:text-slate-400 transition-colors">Cookie Policy</a>
-          <a href="#" class="hover:text-slate-400 transition-colors">Note Legali</a>
-        </div>
+      <div class="pt-8 border-t border-white/10 text-center text-white/40 text-sm">
+        <p>&copy; 2026 La Vera Pizzeria. Tutti i diritti riservati. Realizzato con passione.</p>
       </div>
-
     </div>
   </footer>
 
-
   <!-- ============================================================
-       JAVASCRIPT
+       SCRIPTS
        ============================================================ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>
-    // ============================================================
-    // 1. NAVBAR: aggiunge ombra allo scroll
-    // ============================================================
-    const navbar = document.getElementById('navbar');
+    // 1. Navbar Scroll Effect
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 20) {
-        navbar.classList.add('scrolled');
+      const nav = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled', 'py-1');
+        nav.classList.remove('py-3');
       } else {
-        navbar.classList.remove('scrolled');
-      }
-    }, { passive: true });
-
-
-    // ============================================================
-    // 2. MENU MOBILE: toggle apertura/chiusura
-    // ============================================================
-    const menuBtn  = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const menuBars = document.querySelectorAll('.menu-bar');
-    let menuOpen = false;
-
-    menuBtn.addEventListener('click', () => {
-      menuOpen = !menuOpen;
-      mobileMenu.classList.toggle('hidden', !menuOpen);
-
-      // Animazione hamburger → X
-      if (menuOpen) {
-        menuBars[0].style.transform = 'translateY(8px) rotate(45deg)';
-        menuBars[1].style.opacity   = '0';
-        menuBars[2].style.transform = 'translateY(-8px) rotate(-45deg)';
-      } else {
-        menuBars[0].style.transform = '';
-        menuBars[1].style.opacity   = '';
-        menuBars[2].style.transform = '';
+        nav.classList.remove('scrolled', 'py-1');
+        nav.classList.add('py-3');
       }
     });
 
-    function closeMobileMenu() {
-      menuOpen = false;
-      mobileMenu.classList.add('hidden');
-      menuBars[0].style.transform = '';
-      menuBars[1].style.opacity   = '';
-      menuBars[2].style.transform = '';
-    }
+    // 2. Mobile Menu Toggle
+    const menuBtn = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      const icon = menuBtn.querySelector('i');
+      icon.classList.toggle('fa-bars');
+      icon.classList.toggle('fa-times');
+    });
 
-
-    // ============================================================
-    // 3. SCROLL REVEAL: animazione elementi al scroll
-    // ============================================================
+    // 3. Scroll Reveal Animation
     const revealElements = document.querySelectorAll('.reveal');
-
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          // Ritardo progressivo per gli elementi nella stessa griglia
-          setTimeout(() => {
-            entry.target.classList.add('visible');
-          }, i * 80);
-          revealObserver.unobserve(entry.target);
+    const revealOnScroll = () => {
+      revealElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.85) {
+          el.classList.add('visible');
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    };
+    window.addEventListener('scroll', revealOnScroll);
+    window.addEventListener('load', revealOnScroll);
 
-    revealElements.forEach(el => revealObserver.observe(el));
-
-
-    // ============================================================
-    // 4. FORM: validazione e feedback visivo
-    // ============================================================
-    const form        = document.getElementById('contact-form');
-    const formSuccess = document.getElementById('form-success');
-
+    // 4. Contact Form Success Simulation
+    const form = document.getElementById('contact-form');
+    const successMsg = document.getElementById('form-success');
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-
-      const nome     = document.getElementById('nome').value.trim();
-      const telefono = document.getElementById('telefono').value.trim();
-      const messaggio = document.getElementById('messaggio').value.trim();
-      const privacy  = document.getElementById('privacy').checked;
-
-      if (!nome || !telefono || !messaggio || !privacy) {
-        // Evidenzia i campi vuoti
-        [document.getElementById('nome'), document.getElementById('telefono'), document.getElementById('messaggio')].forEach(input => {
-          if (!input.value.trim()) {
-            input.style.borderColor = '#EF4444';
-            input.addEventListener('input', () => { input.style.borderColor = ''; }, { once: true });
-          }
-        });
-        if (!privacy) {
-          document.getElementById('privacy').style.outline = '2px solid #EF4444';
-        }
-        return;
-      }
-
-      // Simula invio (qui puoi integrare Formspree, EmailJS, ecc.)
-      const btn = form.querySelector('button[type="submit"]');
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Invio in corso...';
-      btn.disabled = true;
-
+      form.classList.add('opacity-50', 'pointer-events-none');
       setTimeout(() => {
-        form.style.display = 'none';
-        formSuccess.classList.remove('hidden');
+        form.reset();
+        form.classList.add('hidden');
+        successMsg.classList.remove('hidden');
       }, 1500);
     });
 
+    // 5. 3D Pizza Chart Integration
+    (() => {
+      const container = document.getElementById('chart-container');
+      const legendEl = document.getElementById('legend');
 
-    // ============================================================
-    // 5. ACTIVE NAV LINK: evidenzia la sezione corrente
-    // ============================================================
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('nav a[href^="#"]');
+      const segments = [
+        { label: 'Pepperoni', value: 1, color: 0xb22222, hex: '#b22222' },
+        { label: 'Funghi', value: 1, color: 0xc8a96e, hex: '#c8a96e' },
+        { label: 'Basilico', value: 1, color: 0x3a7a2a, hex: '#3a7a2a' },
+        { label: 'Olive', value: 1, color: 0x2a2a2a, hex: '#2a2a2a' },
+        { label: 'Peperoni', value: 1, color: 0xd4a017, hex: '#d4a017' },
+        { label: 'Mozzarella', value: 1, color: 0xf5e6c8, hex: '#f5e6c8' },
+      ];
 
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          navLinks.forEach(link => {
-            link.classList.remove('text-red-400');
-            if (link.getAttribute('href') === '#' + entry.target.id) {
-              link.classList.add('text-red-400');
-            }
-          });
+      segments.forEach(s => {
+        const item = document.createElement('div');
+        item.className = 'legend-item';
+        item.innerHTML = `
+          <div class="legend-dot" style="background:${s.hex}"></div>
+          <span class="legend-label">${s.label}</span>
+        `;
+        legendEl.appendChild(item);
+      });
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 100);
+      camera.position.set(0, 4.5, 6);
+      camera.lookAt(0, 0, 0);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      container.appendChild(renderer.domElement);
+
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+      scene.add(ambientLight);
+
+      const mainLight = new THREE.DirectionalLight(0xffeedd, 1.2);
+      mainLight.position.set(5, 8, 5);
+      mainLight.castShadow = true;
+      scene.add(mainLight);
+
+      const chartGroup = new THREE.Group();
+      scene.add(chartGroup);
+
+      const PIE_RADIUS = 2.2;
+      const PIE_HEIGHT = 0.35;
+
+      function createPieSlice(startAngle, endAngle, color, index) {
+        const sliceGroup = new THREE.Group();
+        const angle = endAngle - startAngle;
+        const midAngle = startAngle + angle / 2;
+
+        const shape = new THREE.Shape();
+        shape.moveTo(0, 0);
+        shape.absarc(0, 0, PIE_RADIUS, startAngle, endAngle, false);
+        shape.lineTo(0, 0);
+
+        const extrudeSettings = { depth: PIE_HEIGHT, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.05, bevelSegments: 8 };
+        const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+        const material = new THREE.MeshStandardMaterial({ color: color, roughness: 0.5, metalness: 0.1 });
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.rotation.x = -Math.PI / 2;
+        mesh.position.y = PIE_HEIGHT / 2;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.userData = { segmentIndex: index };
+        sliceGroup.add(mesh);
+
+        sliceGroup.userData = { segmentIndex: index, originalY: 0, midAngle: midAngle };
+        return sliceGroup;
+      }
+
+      const sliceMeshes = [];
+      let currentAngle = 0;
+      segments.forEach((seg, i) => {
+        const sliceAngle = (1 / segments.length) * Math.PI * 2;
+        const slice = createPieSlice(currentAngle, currentAngle + sliceAngle, seg.color, i);
+        chartGroup.add(slice);
+        sliceMeshes.push(slice);
+        currentAngle += sliceAngle;
+      });
+
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
+      let hoveredIndex = -1;
+
+      container.addEventListener('mousemove', (e) => {
+        const rect = container.getBoundingClientRect();
+        mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      });
+
+      let isDragging = false;
+      let prevX = 0;
+      let targetRotationY = 0;
+      let rotationY = 0;
+
+      container.addEventListener('mousedown', (e) => { isDragging = true; prevX = e.clientX; });
+      window.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+          const dx = e.clientX - prevX;
+          targetRotationY += dx * 0.01;
+          prevX = e.clientX;
         }
       });
-    }, { threshold: 0.4 });
+      window.addEventListener('mouseup', () => { isDragging = false; });
 
-    sections.forEach(section => sectionObserver.observe(section));
+      function animate() {
+        requestAnimationFrame(animate);
+        rotationY += (targetRotationY - rotationY) * 0.1;
+        chartGroup.rotation.y = rotationY;
+
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(chartGroup.children, true);
+        
+        let newHoveredIndex = -1;
+        if (intersects.length > 0) {
+          const obj = intersects[0].object;
+          if (obj.userData.segmentIndex !== undefined) newHoveredIndex = obj.userData.segmentIndex;
+        }
+
+        if (newHoveredIndex !== hoveredIndex) {
+          hoveredIndex = newHoveredIndex;
+          document.querySelectorAll('.legend-item').forEach((el, i) => {
+            el.style.transform = i === hoveredIndex ? 'scale(1.1)' : 'scale(1)';
+            el.style.borderColor = i === hoveredIndex ? '#D32F2F' : '#eee';
+          });
+        }
+
+        sliceMeshes.forEach((group, i) => {
+          const targetY = i === hoveredIndex ? 0.3 : 0;
+          group.position.y += (targetY - group.position.y) * 0.1;
+        });
+
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      window.addEventListener('resize', () => {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+      });
+    })();
   </script>
-
 </body>
 </html>
